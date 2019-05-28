@@ -14,7 +14,7 @@ keyboard2.row ('/Западная', '/Восточная')
 keyboard3 = telebot.types.ReplyKeyboardMarkup(True, True)
 keyboard3.row ('/Северо-Западный', '/Тихоокеанский', '/Юго-Западный')
 keyboard4 = telebot.types.ReplyKeyboardMarkup(True, True)
-keyboard4.row ('/Антантический', '/Центральный', '/Юго-Восточный')
+keyboard4.row ('/Антлантический', '/Центральный', '/Юго-Восточный')
 keyboard5 = telebot.types.ReplyKeyboardMarkup(True, True)
 keyboard5.row ('Портленд', 'Оклахома', 'Юта', 'Миннесота', 'Денвер')
 keyboard6 = telebot.types.ReplyKeyboardMarkup(True, True)
@@ -52,31 +52,31 @@ def choose_division2(message):
 
 @bot.message_handler(commands=['Северо-Западный'])
 def choose_team1(message):
-    bot.send_message(message.chat.id, 'Выбери дивизион', reply_markup=keyboard5)
+    bot.send_message(message.chat.id, 'Выбери команду', reply_markup=keyboard5)
 
 
 @bot.message_handler(commands=['Тихоокеанский'])
 def choose_team2(message):
-    bot.send_message(message.chat.id, 'Выбери дивизион', reply_markup=keyboard6)
+    bot.send_message(message.chat.id, 'Выбери команду', reply_markup=keyboard6)
 
 
 @bot.message_handler(commands=['Юго-Западный'])
 def choose_team3(message):
-    bot.send_message(message.chat.id, 'Выбери дивизион', reply_markup=keyboard7)
+    bot.send_message(message.chat.id, 'Выбери команду', reply_markup=keyboard7)
 
 
 @bot.message_handler(commands=['Атлантический'])
 def choose_team4(message):
-    bot.send_message(message.chat.id, 'Выбери дивизион', reply_markup=keyboard8)
+    bot.send_message(message.chat.id, 'Выбери команду', reply_markup=keyboard8)
 
 @bot.message_handler(commands=['Центральный'])
 def choose_team5(message):
-    bot.send_message(message.chat.id, 'Выбери дивизион', reply_markup=keyboard9)
+    bot.send_message(message.chat.id, 'Выбери команду', reply_markup=keyboard9)
 
 
 @bot.message_handler(commands=['Юго-Восточный'])
 def choose_team6(message):
-    bot.send_message(message.chat.id, 'Выбери дивизион', reply_markup=keyboard10)
+    bot.send_message(message.chat.id, 'Выбери команду', reply_markup=keyboard10)
 
 
 @bot.message_handler(content_types=['text'])
@@ -148,13 +148,14 @@ def team_stats_output(message):
     text_file.close()
     config = imgkit.config(wkhtmltoimage=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltoimage.exe")
     imgkit.from_file("data.html", "out.jpg" ,config=config)
-    bot.send_photo(message.chat.id, open('out.jpg', 'rb') )
+    bot.send_document(message.chat.id, open('out.jpg', 'rb') )
     path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data.html')
     os.remove(path)
     path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'tables.csv')
     os.remove(path)
     path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'out.jpg')
     os.remove(path)
+    bot.send_message(message.chat.id, 'Чтобы снова выбрать команду, нажми кнопку ниже', reply_markup=keyboard1)
 
 
 bot.polling()
