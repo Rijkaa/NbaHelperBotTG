@@ -172,7 +172,7 @@ def team_stats_output(message):
     os.remove(path)
     path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'out.jpg')
     os.remove(path)
-    bot.send_message(message.chat.id, 'Чтобы снова выбрать команду нажми кнопку ниже. Чтобы узнать состав команды в этот год, введи год четыремя цифрами и отправь мне', reply_markup=keyboard1)
+    bot.send_message(message.chat.id, 'Чтобы снова выбрать команду нажми кнопку ниже. Чтобы узнать состав команды в этот год, введи год четыремя цифрами и отправь мне. Чтобы узнать статистику какого-либо игрока напиши мне его имя и фамилию на английском языке', reply_markup=keyboard1)
 
 
 
