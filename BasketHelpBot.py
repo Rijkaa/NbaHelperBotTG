@@ -9,25 +9,38 @@ import requests
 bot = telebot.TeleBot(config.token)
 config = imgkit.config(wkhtmltoimage=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltoimage.exe")
 keyboard1 = telebot.types.ReplyKeyboardMarkup(True, True)
-keyboard1.row ('/team')
+keyboard1.row('/team')
 keyboard2 = telebot.types.ReplyKeyboardMarkup(True, True)
-keyboard2.row ('/Западная', '/Восточная')
+keyboard2.row('/Западная', '/Восточная')
 keyboard3 = telebot.types.ReplyKeyboardMarkup(True, True)
-keyboard3.row ('/Северо-Западный', '/Тихоокеанский', '/Юго-Западный')
+keyboard3.row('/Северо-Западный', '/Тихоокеанский')
+keyboard3.row('/Юго-Западный')
 keyboard4 = telebot.types.ReplyKeyboardMarkup(True, True)
-keyboard4.row ('/Антлантический', '/Центральный', '/Юго-Восточный')
+keyboard4.row('/Атлантический', '/Центральный')
+keyboard4.row('/Юго-Восточный')
 keyboard5 = telebot.types.ReplyKeyboardMarkup(True, True)
-keyboard5.row ('Портленд', 'Оклахома', 'Юта', 'Миннесота', 'Денвер')
+keyboard5.row('Портленд', 'Оклахома', 'Юта')
+keyboard5.row('Миннесота', 'Денвер')
 keyboard6 = telebot.types.ReplyKeyboardMarkup(True, True)
-keyboard6.row ('Голден Стейт', 'ЛА Клипперс', 'ЛА Лейкерс', 'Сакраменто', 'Финикс')
+keyboard6.row('Голден Стейт', 'ЛА Клипперс', 'ЛА Лейкерс')
+keyboard6.row('Сакраменто', 'Финикс')
 keyboard7 = telebot.types.ReplyKeyboardMarkup(True, True)
-keyboard7.row ('Хьюстон', 'Нью-Орлеан', 'Сан-Антонио', 'Даллас', 'Мемфис')
+keyboard7.row('Хьюстон', 'Нью-Орлеан', 'Сан-Антонио')
+keyboard7.row('Даллас', 'Мемфис')
 keyboard8 = telebot.types.ReplyKeyboardMarkup(True, True)
-keyboard8.row ('Торонто', 'Бостон', 'Филадельфия', 'Нью-Йорк', 'Бруклин')
+keyboard8.row('Торонто', 'Бостон', 'Филадельфия')
+keyboard8.row('Нью-Йорк', 'Бруклин')
 keyboard9 = telebot.types.ReplyKeyboardMarkup(True, True)
-keyboard9.row ('Кливленд', 'Индиана','Милуоки', 'Детройт', 'Чикаго')
+keyboard9.row('Кливленд', 'Индиана','Милуоки')
+keyboard9.row('Детройт', 'Чикаго')
 keyboard10 = telebot.types.ReplyKeyboardMarkup(True, True)
-keyboard10.row ('Майами', 'Вашингтон', 'Шарлотт', 'Орландо', 'Атланта')
+keyboard10.row('Майами', 'Вашингтон', 'Шарлотт')
+keyboard10.row('Орландо', 'Атланта')
+keyboard11 = telebot.types.ReplyKeyboardMarkup(True, True)
+keyboard11.row('/team')
+keyboard11.row('Броски', 'Scoring', 'Подборы')
+keyboard11.row('Блоки', 'Перехваты', 'Потери')
+keyboard11.row('Фолы')
 
 
 @bot.message_handler(commands=['start'])
@@ -82,82 +95,118 @@ def choose_team6(message):
 
 @bot.message_handler(content_types=['text'])
 def team_stats_output(message):
-    year = 0
     k = message.text
     global site_ad
     if message.text == 'Портленд':
-        site_ad = "https://www.basketball-reference.com/teams/POR/"
+        site_ad = 'https://www.teamrankings.com/nba/team/portland-trail-blazers/stats'
+        stat = 'Points/Game'
     elif message.text == 'Оклахома':
-        site_ad = "https://www.basketball-reference.com/teams/OKC/"
+        site_ad = "https://www.teamrankings.com/nba/team/oklahoma-city-thunder/stats"
+        stat = 'Points/Game'
     elif message.text == 'Юта':
-        site_ad = "https://www.basketball-reference.com/teams/UTA/"
+        site_ad = 'https://www.teamrankings.com/nba/team/utah-jazz/stats'
+        stat = 'Points/Game'
     elif message.text == 'Денвер':
-        site_ad = "https://www.basketball-reference.com/teams/DEN/"
+        site_ad = "https://www.teamrankings.com/nba/team/denver-nuggets/stats"
+        stat = 'Points/Game'
     elif message.text == 'Миннесота':
-        site_ad = "https://www.basketball-reference.com/teams/MIN/"
+        site_ad = 'https://www.teamrankings.com/nba/team/minnesota-timberwolves/stats'
+        stat = 'Points/Game'
     elif message.text == 'Голден Стейт':
-        site_ad = "https://www.basketball-reference.com/teams/GSW/"
+        site_ad = "https://www.teamrankings.com/nba/team/golden-state-warriors/stats"
+        stat = 'Points/Game'
     elif message.text == 'ЛА Клипперс':
-        site_ad = "https://www.basketball-reference.com/teams/LAC/"
+        site_ad = "https://www.teamrankings.com/nba/team/la-clippers/stats"
+        stat = 'Points/Game'
     elif message.text == 'ЛА Лейкерс':
-        site_ad = "https://www.basketball-reference.com/teams/LAL/"
+        site_ad = "https://www.teamrankings.com/nba/team/la-lakers/stats"
+        stat = 'Points/Game'
     elif message.text == 'Сакраменто':
-        site_ad = "https://www.basketball-reference.com/teams/SAC/"
+        site_ad = 'https://www.teamrankings.com/nba/team/sacramento-kings/stats'
+        stat = 'Points/Game'
     elif message.text == 'Финикс':
-        site_ad = "https://www.basketball-reference.com/teams/PHO/"
+        site_ad = 'https://www.teamrankings.com/nba/team/phoenix-suns/stats'
+        stat = 'Points/Game'
     elif message.text == 'Хьюстон':
-        site_ad = "https://www.basketball-reference.com/teams/HOU/"
+        site_ad = "https://www.teamrankings.com/nba/team/houston-rockets/stats"
+        stat = 'Points/Game'
     elif message.text == 'Сан-Антонио':
-        site_ad = "https://www.basketball-reference.com/teams/SAS/"
+        site_ad = 'https://www.teamrankings.com/nba/team/san-antonio-spurs/stats'
+        stat = 'Points/Game'
     elif message.text == 'Даллас':
-        site_ad = "https://www.basketball-reference.com/teams/DAL/"
+        site_ad = "https://www.teamrankings.com/nba/team/dallas-mavericks/stats"
+        stat = 'Points/Game'
     elif message.text == 'Мемфис':
-        site_ad = "https://www.basketball-reference.com/teams/MEM/"
+        site_ad = "https://www.teamrankings.com/nba/team/memphis-grizzlies/stats"
+        stat = 'Points/Game'
     elif message.text == 'Торонто':
-        site_ad = "https://www.basketball-reference.com/teams/TOR/"
+        stat = 'Points/Game'
+        site_ad = 'https://www.teamrankings.com/nba/team/toronto-raptors/stats'
     elif message.text == 'Бостон':
-        site_ad = "https://www.basketball-reference.com/teams/BOS/"
+        site_ad = 'https://www.teamrankings.com/nba/team/boston-celtics/stats'
+        stat = 'Points/Game'
     elif message.text == 'Филадельфия':
-        site_ad = "https://www.basketball-reference.com/teams/PHI/"
+        site_ad = 'https://www.teamrankings.com/nba/team/philadelphia-76ers/stats'
+        stat = 'Points/Game'
     elif message.text == 'Бруклин':
-        site_ad = "https://www.basketball-reference.com/teams/BRK/"
+        stat = 'Points/Game'
+        site_ad = "https://www.teamrankings.com/nba/team/brooklyn-nets/stats"
     elif message.text == 'Нью-Йорк':
-        site_ad = "https://www.basketball-reference.com/teams/NYK/"
+        stat = 'Points/Game'
+        site_ad = "https://www.teamrankings.com/nba/team/new-york-knicks/stats"
     elif message.text == 'Милуоки':
-        site_ad = "https://www.basketball-reference.com/teams/MIL/"
+        site_ad = "https://www.teamrankings.com/nba/team/milwaukee-bucks/stats"
+        stat = 'Points/Game'
     elif message.text == 'Кливленд':
-        site_ad = "https://www.basketball-reference.com/teams/CLE/"
+        stat = 'Points/Game'
+        site_ad = "https://www.teamrankings.com/nba/team/cleveland-cavaliers/stats"
     elif message.text == 'Индиана':
-        site_ad = "https://www.basketball-reference.com/teams/IND/"
+        site_ad = "https://www.teamrankings.com/nba/team/indiana-pacers/stats"
+        stat = 'Points/Game'
     elif message.text == 'Детройт':
-        site_ad = "https://www.basketball-reference.com/teams/DET/"
+        site_ad = "https://www.teamrankings.com/nba/team/detroit-pistons/stats"
+        stat = 'Points/Game'
     elif message.text == 'Чикаго':
-        site_ad = "https://www.basketball-reference.com/teams/CHI/"
+        stat = 'Points/Game'
+        site_ad = "https://www.teamrankings.com/nba/team/chicago-bulls/stats"
     elif message.text == 'Майами':
-        site_ad = "https://www.basketball-reference.com/teams/MIA/"
+        site_ad = "https://www.teamrankings.com/nba/team/miami-heat/stats"
+        stat = 'Points/Game'
     elif message.text == 'Вашингтон':
-        site_ad = "https://www.basketball-reference.com/teams/WAS/"
+        site_ad = 'https://www.teamrankings.com/nba/team/washington-wizards/stats'
+        stat = 'Points/Game'
     elif message.text == 'Шарлотт':
-        site_ad = "https://www.basketball-reference.com/teams/CHO/"
+        site_ad = "https://www.teamrankings.com/nba/team/charlotte-hornets/stats"
+        stat = 'Points/Game'
     elif message.text == 'Орландо':
-        site_ad = "https://www.basketball-reference.com/teams/ORL/"
+        site_ad = "https://www.teamrankings.com/nba/team/orlando-magic/stats"
+        stat = 'Points/Game'
     elif message.text == 'Атланта':
-        site_ad = "https://www.basketball-reference.com/teams/ATL/"
+        site_ad = "https://www.teamrankings.com/nba/team/atlanta-hawks/stats"
+        stat = 'Points/Game'
     elif message.text == 'Нью-Орлеан':
-        site_ad = "https://www.basketball-reference.com/teams/NOP/"
+        site_ad = 'https://www.teamrankings.com/nba/team/new-orleans-pelicans/stats'
+        stat = 'Points/Game'
+    elif message.text == 'Броски':
+        stat = 'Effective FG %'
+    elif message.text == 'Scoring':
+        stat = '1st Qtr Pts/Gm'
+    elif message.text == 'Подборы':
+        stat = 'Off Rebounds/Gm'
+    elif message.text == 'Блоки':
+        stat = 'Blocks/Game'
+    elif message.text == 'Перехваты':
+        stat ='Steals/Game'
+    elif message.text == 'Потери':
+        stat = 'Turnovers/Game'
+    elif message.text == 'Фолы':
+        stat ='Personal Fouls/Gm'
     elif isinstance(k, str):
         k = k.replace(' ', '-')
-    else:
-        year = int(message.text)
-    if year != 0:
-        site_ad = site_ad + str(year) + '.html/'
-    if k != message.text:
-        k = k.lower()
-        site_ad = 'https://www.teamrankings.com/nba/player/' + str(k) + '/stats'
-    if site_ad[12] == 't':
-        tables, = pd.read_html(site_ad, match='Stat', header = 0)
-    else:
-        tables, = pd.read_html(site_ad)
+        stat = 'Stat'
+        k.lower()
+        site_ad = 'https://www.teamrankings.com/nba/player/' + k + '/stats'
+    tables, = pd.read_html(site_ad, match=stat, header=0)
     tables.to_csv("tables.csv", index=False)
     data = pd.read_csv(open("tables.csv", "r"))
     text_file = open("data.html", "a")
@@ -172,12 +221,10 @@ def team_stats_output(message):
     os.remove(path)
     path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'out.jpg')
     os.remove(path)
-    bot.send_message(message.chat.id, 'Чтобы снова выбрать команду нажми кнопку ниже. Чтобы узнать состав команды в этот год, введи год четыремя цифрами и отправь мне. Чтобы узнать статистику какого-либо игрока напиши мне его имя и фамилию на английском языке', reply_markup=keyboard1)
-
-
-
-
-
+    if (stat != 'Stat'):
+        bot.send_message(message.chat.id, 'Чтобы снова выбрать команду нажми кнопку ниже. Чтобы узнать статистику по различным параметрам, выбери один из предложенных ниже. Чтобы узнать статистику какого-либо игрока напиши мне его имя и фамилию на английском языке', reply_markup=keyboard11)
+    else:
+        bot.send_message(message.chat.id, 'Чтобы снова выбрать команду нажми кнопку ниже. Чтобы узнать статистику какого-либо игрока напиши мне его имя и фамилию на английском языке', reply_markup=keyboard1)
 
 
 bot.polling()
