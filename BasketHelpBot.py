@@ -3,7 +3,8 @@ import config
 import pandas as pd
 import imgkit
 import os
-import requests
+from PIL import Image
+from pathlib import Path
 
 
 bot = telebot.TeleBot(config.token)
@@ -39,8 +40,8 @@ keyboard10.row('Орландо', 'Атланта')
 keyboard11 = telebot.types.ReplyKeyboardMarkup(True, True)
 keyboard11.row('/team')
 keyboard11.row('Броски', 'Scoring', 'Подборы')
-keyboard11.row('Блоки', 'Перехваты', 'Потери')
-keyboard11.row('Фолы')
+keyboard11.row('Блоки', 'Перехваты', 'Потери', 'Фолы')
+keyboard11.row('Game log')
 
 
 @bot.message_handler(commands=['start'])
@@ -97,113 +98,156 @@ def choose_team6(message):
 def team_stats_output(message):
     k = message.text
     global site_ad
+    global widthtype
     if message.text == 'Портленд':
         site_ad = 'https://www.teamrankings.com/nba/team/portland-trail-blazers/stats'
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Оклахома':
         site_ad = "https://www.teamrankings.com/nba/team/oklahoma-city-thunder/stats"
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Юта':
         site_ad = 'https://www.teamrankings.com/nba/team/utah-jazz/stats'
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Денвер':
         site_ad = "https://www.teamrankings.com/nba/team/denver-nuggets/stats"
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Миннесота':
         site_ad = 'https://www.teamrankings.com/nba/team/minnesota-timberwolves/stats'
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Голден Стейт':
         site_ad = "https://www.teamrankings.com/nba/team/golden-state-warriors/stats"
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'ЛА Клипперс':
         site_ad = "https://www.teamrankings.com/nba/team/la-clippers/stats"
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'ЛА Лейкерс':
         site_ad = "https://www.teamrankings.com/nba/team/la-lakers/stats"
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Сакраменто':
         site_ad = 'https://www.teamrankings.com/nba/team/sacramento-kings/stats'
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Финикс':
         site_ad = 'https://www.teamrankings.com/nba/team/phoenix-suns/stats'
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Хьюстон':
         site_ad = "https://www.teamrankings.com/nba/team/houston-rockets/stats"
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Сан-Антонио':
         site_ad = 'https://www.teamrankings.com/nba/team/san-antonio-spurs/stats'
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Даллас':
         site_ad = "https://www.teamrankings.com/nba/team/dallas-mavericks/stats"
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Мемфис':
         site_ad = "https://www.teamrankings.com/nba/team/memphis-grizzlies/stats"
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Торонто':
         stat = 'Points/Game'
+        widthtype = 520
         site_ad = 'https://www.teamrankings.com/nba/team/toronto-raptors/stats'
     elif message.text == 'Бостон':
         site_ad = 'https://www.teamrankings.com/nba/team/boston-celtics/stats'
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Филадельфия':
         site_ad = 'https://www.teamrankings.com/nba/team/philadelphia-76ers/stats'
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Бруклин':
         stat = 'Points/Game'
+        widthtype = 520
         site_ad = "https://www.teamrankings.com/nba/team/brooklyn-nets/stats"
     elif message.text == 'Нью-Йорк':
         stat = 'Points/Game'
+        widthtype = 520
         site_ad = "https://www.teamrankings.com/nba/team/new-york-knicks/stats"
     elif message.text == 'Милуоки':
         site_ad = "https://www.teamrankings.com/nba/team/milwaukee-bucks/stats"
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Кливленд':
         stat = 'Points/Game'
+        widthtype = 520
         site_ad = "https://www.teamrankings.com/nba/team/cleveland-cavaliers/stats"
     elif message.text == 'Индиана':
         site_ad = "https://www.teamrankings.com/nba/team/indiana-pacers/stats"
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Детройт':
         site_ad = "https://www.teamrankings.com/nba/team/detroit-pistons/stats"
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Чикаго':
         stat = 'Points/Game'
+        widthtype = 520
         site_ad = "https://www.teamrankings.com/nba/team/chicago-bulls/stats"
     elif message.text == 'Майами':
         site_ad = "https://www.teamrankings.com/nba/team/miami-heat/stats"
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Вашингтон':
         site_ad = 'https://www.teamrankings.com/nba/team/washington-wizards/stats'
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Шарлотт':
         site_ad = "https://www.teamrankings.com/nba/team/charlotte-hornets/stats"
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Орландо':
         site_ad = "https://www.teamrankings.com/nba/team/orlando-magic/stats"
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Атланта':
         site_ad = "https://www.teamrankings.com/nba/team/atlanta-hawks/stats"
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Нью-Орлеан':
         site_ad = 'https://www.teamrankings.com/nba/team/new-orleans-pelicans/stats'
         stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Броски':
         stat = 'Effective FG %'
+        widthtype = 520
     elif message.text == 'Scoring':
         stat = '1st Qtr Pts/Gm'
+        widthtype = 528
     elif message.text == 'Подборы':
         stat = 'Off Rebounds/Gm'
+        widthtype = 528
     elif message.text == 'Блоки':
         stat = 'Blocks/Game'
+        widthtype = 574
     elif message.text == 'Перехваты':
         stat ='Steals/Game'
+        widthtype = 579
     elif message.text == 'Потери':
         stat = 'Turnovers/Game'
+        widthtype = 550
     elif message.text == 'Фолы':
         stat ='Personal Fouls/Gm'
+        widthtype = 517
+    elif message.text == 'Game log':
+        site_ad = site_ad.replace('stats', 'game-log')
+        stat = 'Date'
+        widthtype = 634
     elif isinstance(k, str):
         k = k.replace(' ', '-')
         stat = 'Stat'
+        widthtype = 322
         k.lower()
         site_ad = 'https://www.teamrankings.com/nba/player/' + k + '/stats'
     tables, = pd.read_html(site_ad, match=stat, header=0)
@@ -214,6 +258,13 @@ def team_stats_output(message):
     text_file.close()
     config = imgkit.config(wkhtmltoimage=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltoimage.exe")
     imgkit.from_file("data.html", "out.jpg" ,config=config)
+    imgfile = Path('out.jpg')
+    img = Image.open(imgfile)
+    width = img.size[0] - widthtype
+    height = img.size[1]
+    img3 = img.crop((0,0,width,height))
+    img3.save('out.jpg')
+    del widthtype
     bot.send_document(message.chat.id, open('out.jpg', 'rb') )
     path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data.html')
     os.remove(path)
@@ -222,7 +273,7 @@ def team_stats_output(message):
     path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'out.jpg')
     os.remove(path)
     if (stat != 'Stat'):
-        bot.send_message(message.chat.id, 'Чтобы снова выбрать команду нажми кнопку ниже. Чтобы узнать статистику по различным параметрам, выбери один из предложенных ниже. Чтобы узнать статистику какого-либо игрока напиши мне его имя и фамилию на английском языке', reply_markup=keyboard11)
+        bot.send_message(message.chat.id, 'Чтобы снова выбрать команду нажми кнопку ниже. Чтобы узнать статистику по различным параметрам или посмотреть гейм лог команды, выбери одину из кнопок предложенных ниже. Чтобы узнать статистику какого-либо игрока напиши мне его имя и фамилию на английском языке', reply_markup=keyboard11)
     else:
         bot.send_message(message.chat.id, 'Чтобы снова выбрать команду нажми кнопку ниже. Чтобы узнать статистику какого-либо игрока напиши мне его имя и фамилию на английском языке', reply_markup=keyboard1)
 
