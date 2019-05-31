@@ -165,9 +165,9 @@ def team_stats_output(message):
         stat = 'Points/Game'
         widthtype = 520
     elif message.text == 'Торонто':
+        site_ad = 'https://www.teamrankings.com/nba/team/toronto-raptors/stats'
         stat = 'Points/Game'
         widthtype = 520
-        site_ad = 'https://www.teamrankings.com/nba/team/toronto-raptors/stats'
     elif message.text == 'Бостон':
         site_ad = 'https://www.teamrankings.com/nba/team/boston-celtics/stats'
         stat = 'Points/Game'
@@ -177,21 +177,21 @@ def team_stats_output(message):
         stat = 'Points/Game'
         widthtype = 520
     elif message.text == 'Бруклин':
-        stat = 'Points/Game'
-        widthtype = 520
         site_ad = "https://www.teamrankings.com/nba/team/brooklyn-nets/stats"
-    elif message.text == 'Нью-Йорк':
         stat = 'Points/Game'
         widthtype = 520
+    elif message.text == 'Нью-Йорк':
         site_ad = "https://www.teamrankings.com/nba/team/new-york-knicks/stats"
+        stat = 'Points/Game'
+        widthtype = 520
     elif message.text == 'Милуоки':
         site_ad = "https://www.teamrankings.com/nba/team/milwaukee-bucks/stats"
         stat = 'Points/Game'
         widthtype = 520
     elif message.text == 'Кливленд':
+        site_ad = "https://www.teamrankings.com/nba/team/cleveland-cavaliers/stats"
         stat = 'Points/Game'
         widthtype = 520
-        site_ad = "https://www.teamrankings.com/nba/team/cleveland-cavaliers/stats"
     elif message.text == 'Индиана':
         site_ad = "https://www.teamrankings.com/nba/team/indiana-pacers/stats"
         stat = 'Points/Game'
@@ -201,9 +201,9 @@ def team_stats_output(message):
         stat = 'Points/Game'
         widthtype = 520
     elif message.text == 'Чикаго':
+        site_ad = "https://www.teamrankings.com/nba/team/chicago-bulls/stats"
         stat = 'Points/Game'
         widthtype = 520
-        site_ad = "https://www.teamrankings.com/nba/team/chicago-bulls/stats"
     elif message.text == 'Майами':
         site_ad = "https://www.teamrankings.com/nba/team/miami-heat/stats"
         stat = 'Points/Game'
