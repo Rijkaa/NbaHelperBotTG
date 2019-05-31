@@ -10,7 +10,7 @@ from pathlib import Path
 bot = telebot.TeleBot(config.token)
 config = imgkit.config(wkhtmltoimage=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltoimage.exe")
 keyboard1 = telebot.types.ReplyKeyboardMarkup(True, True)
-keyboard1.row('/team')
+keyboard1.row('/team', '/rankings')
 keyboard2 = telebot.types.ReplyKeyboardMarkup(True, True)
 keyboard2.row('Западная', 'Восточная')
 keyboard3 = telebot.types.ReplyKeyboardMarkup(True, True)
@@ -38,16 +38,25 @@ keyboard10 = telebot.types.ReplyKeyboardMarkup(True, True)
 keyboard10.row('Майами', 'Вашингтон', 'Шарлотт')
 keyboard10.row('Орландо', 'Атланта')
 keyboard11 = telebot.types.ReplyKeyboardMarkup(True, True)
-keyboard11.row('/team')
+keyboard11.row('/team', '/rankings')
 keyboard11.row('Броски', 'Scoring', 'Подборы')
 keyboard11.row('Блоки', 'Перехваты', 'Потери', 'Фолы')
 keyboard11.row('Game log')
+keyboard12 = telebot.types.ReplyKeyboardMarkup(True, True)
+keyboard12.row('Обычная', 'Продвинутая')
+keyboard13 = telebot.types.ReplyKeyboardMarkup(True, True)
+keyboard13.row('Points', 'Assists', 'Rebounds')
+keyboard13.row('Steals', 'Turnovers', 'Blocks')
+keyboard14 = telebot.types.ReplyKeyboardMarkup(True, True)
+keyboard14.row('EFG Percentage', 'TS Percentage')
+keyboard14.row('FTA/FGA', 'Defensive Plays per Foul')
+keyboard14.row('NBA Efficiency', 'Win Score')
 
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
     bot.send_message(message.chat.id, 'Привет, ты написал мне /start')
-    bot.send_message(message.chat.id, 'Команда /team - после введения названия команды выводит Advanced Statistics для данной команды, или можешь ввести имя и фамилию игрока на английском языке, и я выведу его статистику за этот сезон', reply_markup=keyboard1)
+    bot.send_message(message.chat.id, 'Команды: /team - после введения названия команды выводит Advanced Statistics для данной команды. /rankings - выводит рейтинг игроков по выбранному параметру. Если хочешь просто узнать статистику игрока, введи его имя и фамилию на английском языке', reply_markup=keyboard1)
 
 
 @bot.message_handler(commands=['team'])
@@ -55,11 +64,19 @@ def choose_conference(message):
     bot.send_message(message.chat.id, 'Выбери конференцию команды',reply_markup=keyboard2)
 
 
+@bot.message_handler(commands=['rankings'])
+def choose_stat(message):
+    bot.send_message(message.chat.id, 'Выбери тип статистики', reply_markup=keyboard12)
+
 @bot.message_handler(content_types=['text'])
 def team_stats_output(message):
     k = message.text
     global site_ad
     global widthtype
+    x = 0
+    y = 0
+    widthtype = 0
+    heighttype = 0
     par = 0
     if message.text == 'Западная':
         bot.send_message(message.chat.id, 'Выбери дивизион', reply_markup=keyboard3)
@@ -84,6 +101,12 @@ def team_stats_output(message):
         par = 1
     elif message.text == 'Юго-Восточный':
         bot.send_message(message.chat.id, 'Выбери команду', reply_markup=keyboard10)
+        par = 1
+    elif message.text == 'Обычная':
+        bot.send_message(message.chat.id, 'Выбери стату', reply_markup=keyboard13)
+        par = 1
+    elif message.text == 'Продвинутая':
+        bot.send_message(message.chat.id, 'Выбери стату', reply_markup=keyboard14)
         par = 1
     elif message.text == 'Портленд':
         site_ad = 'https://www.teamrankings.com/nba/team/portland-trail-blazers/stats'
@@ -230,6 +253,16 @@ def team_stats_output(message):
         site_ad = site_ad.replace('stats', 'game-log')
         stat = 'Date'
         widthtype = 634
+    elif message.text == 'Points' or message.text == 'Assists' or message.text == 'Rebounds' or message.text == 'Steals' or message.text == 'Turnovers' or message.text == 'Blocks' or message.text == 'EFG Percentage' or message.text == 'TS Percentage' or message.text == 'FTA/FGA' or message.text == 'Defensive Plays per Foul' or message.text == 'NBA Efficiency' or message.text == 'Win Score':
+        x = 31
+        y = 9
+        k = k.lower()
+        k = k.replace(' ', '-')
+        k = k.replace('/', '-')
+        stat = 'Rank'
+        site_ad = 'https://www.teamrankings.com/nba/player-stat/' + k
+        widthtype = 542
+        heighttype = 2090
     elif isinstance(k, str):
         k = k.replace(' ', '-')
         stat = 'Stat'
@@ -249,21 +282,22 @@ def team_stats_output(message):
         imgfile = Path('out.jpg')
         img = Image.open(imgfile)
         width = img.size[0] - widthtype
-        height = img.size[1]
-        img3 = img.crop((0,0,width,height))
+        height = img.size[1] - heighttype
+        img3 = img.crop((x,y,width,height))
         img3.save('out.jpg')
         del widthtype
-        bot.send_document(message.chat.id, open('out.jpg', 'rb') )
+        bot.send_photo(message.chat.id, open('out.jpg', 'rb'))
         path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data.html')
         os.remove(path)
         path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'tables.csv')
         os.remove(path)
         path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'out.jpg')
         os.remove(path)
-        if (stat != 'Stat'):
-            bot.send_message(message.chat.id, 'Чтобы снова выбрать команду нажми кнопку ниже. Чтобы узнать статистику по различным параметрам или посмотреть гейм лог команды, выбери одину из кнопок предложенных ниже. Чтобы узнать статистику какого-либо игрока напиши мне его имя и фамилию на английском языке', reply_markup=keyboard11)
-        else:
-            bot.send_message(message.chat.id, 'Чтобы снова выбрать команду нажми кнопку ниже. Чтобы узнать статистику какого-либо игрока напиши мне его имя и фамилию на английском языке', reply_markup=keyboard1)
-
+        if (stat != 'Stat') and (stat != 'Rank'):
+            bot.send_message(message.chat.id, 'Чтобы снова выбрать команду или просмотреть рейтинги нажми одну из кнопок ниже. Чтобы узнать статистику по различным параметрам или посмотреть гейм лог команды, выбери одину из кнопок предложенных ниже. Чтобы узнать статистику какого-либо игрока напиши мне его имя и фамилию на английском языке', reply_markup=keyboard11)
+        elif stat == 'Stat':
+            bot.send_message(message.chat.id, 'Чтобы снова выбрать команду или просмотреть другие рейтинги нажми одну из кнопок ниже. Чтобы узнать статистику какого-либо игрока напиши мне его имя и фамилию на английском языке', reply_markup=keyboard1)
+        elif stat == 'Rank':
+            bot.send_message(message.chat.id, 'Чтобы снова выбрать команду или просмотреть другие рейтинги нажми одну из кнопок ниже. Чтобы узнать статистику какого-либо игрока напиши мне его имя и фамилию на английском языке', reply_markup=keyboard11)
 
 bot.polling()
