@@ -23,7 +23,7 @@ keyboard5 = telebot.types.ReplyKeyboardMarkup(True, True)
 keyboard5.row('Портленд', 'Оклахома', 'Юта')
 keyboard5.row('Миннесота', 'Денвер')
 keyboard6 = telebot.types.ReplyKeyboardMarkup(True, True)
-keyboard6.row('Голден Стейт', 'ЛА Клипперс', 'ЛА Лейкерс')
+keyboard6.row('Голден Стейт', 'ЛА\nКлипперс', 'ЛА\nЛейкерс')
 keyboard6.row('Сакраменто', 'Финикс')
 keyboard7 = telebot.types.ReplyKeyboardMarkup(True, True)
 keyboard7.row('Хьюстон', 'Нью-Орлеан', 'Сан-Антонио')
@@ -67,6 +67,7 @@ def choose_conference(message):
 @bot.message_handler(commands=['rankings'])
 def choose_stat(message):
     bot.send_message(message.chat.id, 'Выбери тип статистики', reply_markup=keyboard12)
+
 
 @bot.message_handler(content_types=['text'])
 def team_stats_output(message):
@@ -137,7 +138,7 @@ def team_stats_output(message):
         stat = 'Points/Game'
         widthtype = 520
     elif message.text == 'ЛА Лейкерс':
-        site_ad = "https://www.teamrankings.com/nba/team/la-lakers/stats"
+        site_ad = "https://www.teamrankings.com/nba/team/los-angeles-lakers/stats"
         stat = 'Points/Game'
         widthtype = 520
     elif message.text == 'Сакраменто':
@@ -299,5 +300,6 @@ def team_stats_output(message):
             bot.send_message(message.chat.id, 'Чтобы выбрать команду или просмотреть рейтинги нажми одну из кнопок ниже. Чтобы узнать статистику какого-либо игрока напиши мне его имя и фамилию на английском языке', reply_markup=keyboard1)
         elif stat == 'Rank':
             bot.send_message(message.chat.id, 'Чтобы выбрать команду или просмотреть другие рейтинги нажми одну из кнопок ниже. Чтобы узнать статистику какого-либо игрока напиши мне его имя и фамилию на английском языке', reply_markup=keyboard1)
+
 
 bot.polling()
